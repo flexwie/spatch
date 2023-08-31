@@ -1,4 +1,4 @@
-export type Operation =
+export type PatchOperation =
   | {
       op: "add" | "replace" | "test";
       path: string;

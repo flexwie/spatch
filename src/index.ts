@@ -1,12 +1,11 @@
+#!/usr/bin/env node
+
 import { writeFile } from "fs/promises";
 import { applyPatch, fetchSwagger, loadPatch } from "./lib.js";
 import { glob } from "glob";
 import { Command } from "commander";
 import * as path from "path";
-import { createRequire } from "module";
 import { DateTime } from "luxon";
-
-const req = createRequire(import.meta.url);
 
 const program = new Command();
 program
@@ -76,3 +75,6 @@ program
   });
 
 program.parse();
+
+export * from "./jsonpatch.js";
+export * from "./openapi.js";
