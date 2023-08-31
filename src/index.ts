@@ -1,8 +1,12 @@
 import { writeFile } from "fs/promises";
-import { applyPatch, fetchSwagger } from "./lib";
+import { applyPatch, fetchSwagger, loadPatch } from "./lib.js";
 import { glob } from "glob";
 import { Command } from "commander";
 import * as path from "path";
+import { createRequire } from "module";
+import { DateTime } from "luxon";
+
+const req = createRequire(import.meta.url);
 
 const program = new Command();
 program
@@ -29,19 +33,22 @@ program
     "swagger.json"
   )
   .action(async (options) => {
-    const patches = await glob(`${options.patches}/*.js`);
+    const patches = (await glob(`${options.patches}/*.ts`)).reverse();
     const swagger = await fetchSwagger();
 
-    const final = patches.reduce((current, patch) => {
-      const file = require("../" + patch);
-      return applyPatch(
-        current,
+    let modResult = swagger;
+
+    for (var patch of patches) {
+      // const file = await import("../" + patch);
+      const file = await loadPatch(patch);
+      modResult = applyPatch(
+        modResult,
         file.default,
         patch.split("/").at(-1).split(".")[0]
       );
-    }, swagger);
+    }
 
-    await writeFile(options.output, JSON.stringify(final));
+    await writeFile(options.output, JSON.stringify(modResult));
 
     console.log("new swagger file written to", options.output);
   });
@@ -56,12 +63,7 @@ program
     "patches"
   )
   .action(async (name, options) => {
-    var dateDisplay = new Date(
-      Date.now() - new Date().getTimezoneOffset() * 1000 * 60
-    )
-      .toJSON()
-      .slice(0, 10)
-      .replaceAll("-", "");
+    var dateDisplay = DateTime.now().toFormat("yyyyLLddHHmm");
     const filename = `${dateDisplay}-${name}.js`;
     const content = `export default function ${name}(swagger) {
   // apply your changes
