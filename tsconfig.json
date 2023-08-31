@@ -10,9 +10,15 @@
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
     "outDir": "./dist",
     "rootDir": "./src",
+    "baseUrl": "src",
     "lib": [
       "ES2021"
-    ]
+    ],
+    "paths": {
+      "@flexwie/spatch": [
+        "./lib/index.js"
+      ]
+    }
   },
   "include": [
     "src"

@@ -14,6 +14,9 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
+  "bin": {
+    "spatch": "dist/main.js"
+  },
   "dependencies": {
     "@babel/core": "^7.22.11",
     "axios": "^1.5.0",

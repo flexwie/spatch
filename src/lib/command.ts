@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 import { writeFile } from "fs/promises";
 import { applyPatch, fetchSwagger, loadPatch } from "./lib.js";
 import { glob } from "glob";
@@ -7,7 +5,7 @@ import { Command } from "commander";
 import * as path from "path";
 import { DateTime } from "luxon";
 
-const program = new Command();
+export const program = new Command();
 program
   .name("spatch")
   .description("patch swagger files with migration like patches")
@@ -73,8 +71,3 @@ program
 
     console.log(`new patch written to ${filename}`);
   });
-
-program.parse();
-
-export * from "./jsonpatch.js";
-export * from "./openapi.js";
