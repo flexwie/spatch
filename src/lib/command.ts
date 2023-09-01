@@ -4,12 +4,13 @@ import { glob } from "glob";
 import { Command } from "commander";
 import * as path from "path";
 import { DateTime } from "luxon";
+import { spawn } from "child_process";
 
 export const program = new Command();
 program
   .name("spatch")
   .description("patch swagger files with migration like patches")
-  .version("0.1.0");
+  .version("1.0.6");
 
 program
   .command("patch")
@@ -17,12 +18,12 @@ program
   .option(
     "-i, --input <string>",
     "where to fetch the swagger file from",
-    "https://api.dyce.cloud/swagger/v1/swagger.json"
+    "file:" + path.join(process.env.PWD, "swagger.json")
   )
   .option(
     "-p, --patches <string>",
     "where to store/read the patch files from",
-    "patches"
+    path.join(process.env.PWD, "patches")
   )
   .option(
     "-o, --output <string>",
@@ -31,7 +32,7 @@ program
   )
   .action(async (options) => {
     const patches = (await glob(`${options.patches}/*.ts`)).reverse();
-    const swagger = await fetchSwagger();
+    const swagger = await fetchSwagger(options.input);
 
     let modResult = swagger;
 
@@ -57,7 +58,7 @@ program
   .option(
     "-p, --patches <string>",
     "where to store/read the patch files from",
-    "patches"
+    path.join(process.env.PWD, "patches")
   )
   .action(async (name, options) => {
     var dateDisplay = DateTime.now().toFormat("yyyyLLddHHmm");
@@ -69,7 +70,13 @@ export default function ${name}(swagger: OpenAPISchema): PatchOperation[] {
   return [];  
 }`;
 
-    await writeFile(path.join(options.patches, filename), content);
+    const filepath = path.join(options.patches, filename);
+    await writeFile(filepath, content);
 
-    console.log(`new patch written to ${filename}`);
+    const editor = await spawn(process.env.EDITOR, [filepath], {
+      stdio: "inherit",
+    });
+    editor.on("exit", () => {
+      console.log(`new patch written to ${filepath}`);
+    });
   });

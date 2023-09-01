@@ -1,6 +1,6 @@
 {
   "name": "@flexwie/spatch",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "swagger json patcher",
   "author": {
     "name": "Felix Wieland"
@@ -13,7 +13,7 @@
   "scripts": {
     "prestart": "npm run build",
     "build": "rimraf dist && tsc --project tsconfig.json",
-    "start": "node dist/index.js",
+    "start": "node dist/main.js",
     "dev": "ts-node -T --esm src/index.ts"
   },
   "main": "dist/index.js",

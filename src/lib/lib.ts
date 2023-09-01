@@ -3,8 +3,15 @@ import chalk from "chalk";
 import { apply_patch } from "jsonpatch";
 import * as babel from "@babel/core";
 import { readFile } from "fs/promises";
+import { PatchOperation } from "./jsonpatch.js";
+import { OpenAPISchema } from "./openapi.js";
 
-export const fetchSwagger = async () => {
+export const fetchSwagger = async (url: string): Promise<OpenAPISchema> => {
+  if (url.startsWith("file:")) {
+    const content = await readFile(url);
+    return JSON.parse(content.toString());
+  }
+
   const response = await axios.get(
     "https://api.dyce.cloud/swagger/v1/swagger.json"
   );
@@ -12,7 +19,11 @@ export const fetchSwagger = async () => {
   return response.data;
 };
 
-export const applyPatch = (input, fn, filename = "") => {
+export const applyPatch = (
+  input: OpenAPISchema,
+  fn: (input: OpenAPISchema) => PatchOperation[],
+  filename = ""
+) => {
   console.log(chalk.bgBlue.white("", "applying", filename, "\n"));
   try {
     let diff = fn(input);
@@ -32,7 +43,7 @@ export const applyPatch = (input, fn, filename = "") => {
   }
 };
 
-const calculateDiffChanges = (diff) => {
+const calculateDiffChanges = (diff: PatchOperation[]) => {
   const add = diff.filter((d) => d.op.toLowerCase() == "add").length;
   const remove = diff.filter((d) => d.op.toLowerCase() == "remove").length;
   const replace = diff.filter((d) => d.op.toLowerCase() == "replace").length;
