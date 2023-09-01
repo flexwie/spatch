@@ -17,6 +17,9 @@
   "bin": {
     "spatch": "dist/main.js"
   },
+  "files": [
+    "dist/**/*"
+  ],
   "dependencies": {
     "@babel/core": "^7.22.11",
     "axios": "^1.5.0",
