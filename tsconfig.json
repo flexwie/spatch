@@ -14,11 +14,6 @@
     "lib": [
       "ES2021"
     ],
-    "paths": {
-      "@flexwie/spatch": [
-        "./lib/index.js"
-      ]
-    }
   },
   "include": [
     "src"
