@@ -1,3 +1,3 @@
-export * from "./lib/jsonpatch.js";
+export type * from "./lib/jsonpatch.js";
 export * from "./lib/openapi.js";
 export * from "./lib/command.js";

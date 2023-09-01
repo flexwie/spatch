@@ -62,9 +62,11 @@ program
   .action(async (name, options) => {
     var dateDisplay = DateTime.now().toFormat("yyyyLLddHHmm");
     const filename = `${dateDisplay}-${name}.js`;
-    const content = `export default function ${name}(swagger) {
+    const content = `import { PatchOperation, OpenAPISchema } from "@flexwie/spatch";
+
+export default function ${name}(swagger: OpenAPISchema): PatchOperation[] {
   // apply your changes
-  return swagger;  
+  return [];  
 }`;
 
     await writeFile(path.join(options.patches, filename), content);
