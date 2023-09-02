@@ -10,7 +10,7 @@ export const program = new Command();
 program
   .name("spatch")
   .description("patch swagger files with migration like patches")
-  .version("1.0.6");
+  .version("1.0.7");
 
 program
   .command("patch")
