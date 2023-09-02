@@ -1,5 +1,7 @@
 # spatcher
 
+![Made with VHS](https://vhs.charm.sh/vhs-3ZBx1vxRvJZMPnjFFFjnu5.gif)
+
 ## Motivation
 
 The company I work for uses Swashbuckle to generate OpenAPI docs for our ASP.Net applications, but it fails to generate usable output in combintation with OData.
