@@ -19,3 +19,19 @@ npm i -g @flexwie/spatch
 This will also install the `spatch` library globally so you can use the imports in your patches.
 
 ## Usage
+
+Create your first migration:
+
+```sh
+spatch add MyFirstPatch
+```
+
+This will create a patch in the `patches` folder and open your editor to edit it. You can customize the location of your patches with `-p`.
+
+Then apply the pacthes to your swagger file:
+
+```
+spatch patch
+```
+
+You can specify the patch location (`-p`), the the output location (`-o`) and the input (`-i`). Your swagger input can either be a local file (prefixed by 'file://') or a remote url.
