@@ -18,7 +18,7 @@ program
   .option(
     "-i, --input <string>",
     "where to fetch the swagger file from",
-    "file:" + path.join(process.env.PWD, "swagger.json")
+    "file://" + path.join(process.env.PWD, "swagger.json")
   )
   .option(
     "-p, --patches <string>",
@@ -37,7 +37,6 @@ program
     let modResult = swagger;
 
     for (var patch of patches) {
-      // const file = await import("../" + patch);
       const file = await loadPatch(patch);
       modResult = applyPatch(
         modResult,
@@ -62,7 +61,7 @@ program
   )
   .action(async (name, options) => {
     var dateDisplay = DateTime.now().toFormat("yyyyLLddHHmm");
-    const filename = `${dateDisplay}-${name}.js`;
+    const filename = `${dateDisplay}-${name}.ts`;
     const content = `import { PatchOperation, OpenAPISchema } from "@flexwie/spatch";
 
 export default function ${name}(swagger: OpenAPISchema): PatchOperation[] {

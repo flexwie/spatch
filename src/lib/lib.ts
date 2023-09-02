@@ -7,8 +7,8 @@ import { PatchOperation } from "./jsonpatch.js";
 import { OpenAPISchema } from "./openapi.js";
 
 export const fetchSwagger = async (url: string): Promise<OpenAPISchema> => {
-  if (url.startsWith("file:")) {
-    const content = await readFile(url);
+  if (url.startsWith("file://")) {
+    const content = await readFile(url.substring(7));
     return JSON.parse(content.toString());
   }
 
