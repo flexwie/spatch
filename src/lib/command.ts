@@ -10,7 +10,7 @@ export const program = new Command();
 program
   .name("spatch")
   .description("patch swagger files with migration like patches")
-  .version("1.0.7");
+  .version("1.0.8");
 
 program
   .command("patch")
@@ -45,7 +45,7 @@ program
       );
     }
 
-    await writeFile(options.output, JSON.stringify(modResult));
+    await writeFile(options.output, JSON.stringify(modResult, null, 2));
 
     console.log("new swagger file written to", options.output);
   });
